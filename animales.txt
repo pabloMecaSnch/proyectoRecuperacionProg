@@ -1,0 +1,7 @@
+
+perro
+gato
+garza
+lince
+toro
+vaca
