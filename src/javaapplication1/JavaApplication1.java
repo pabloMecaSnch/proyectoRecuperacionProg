@@ -35,6 +35,7 @@ public class JavaApplication1 {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
+        NewJFrame nf = new NewJFrame();
         // TODO code application logic here
         Scanner sc = new Scanner(System.in);
         FileOutputStream fos = null;
