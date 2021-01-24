@@ -1,3 +1,5 @@
+package javaapplication1;
+
 
 
 import java.awt.*;

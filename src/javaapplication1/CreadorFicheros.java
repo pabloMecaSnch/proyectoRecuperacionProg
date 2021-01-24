@@ -29,14 +29,15 @@ import java.util.logging.Logger;
  *
  * @author usuario
  */
-public class JavaApplication1 {
+public class CreadorFicheros {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        NewJFrame nf = new NewJFrame();
+        // NewJFrame nf = new NewJFrame();
         // TODO code application logic here
+        
         Scanner sc = new Scanner(System.in);
         FileOutputStream fos = null;
         
@@ -89,7 +90,7 @@ public class JavaApplication1 {
                 System.out.println(key+" "+value);
             }*/
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(JavaApplication1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CreadorFicheros.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{
               
