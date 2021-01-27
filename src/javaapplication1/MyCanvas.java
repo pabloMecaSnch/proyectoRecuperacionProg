@@ -17,8 +17,10 @@ import javax.swing.ImageIcon;
  */
 public class MyCanvas extends Canvas{
     public int pos;
+    public Color color;
     public MyCanvas(){
         this.pos = 0;
+        this.color=Color.BLACK;
         setBackground(Color.RED);
     }
     public MyCanvas(int posicion){
@@ -29,14 +31,14 @@ public class MyCanvas extends Canvas{
     @Override
     public void paint(Graphics g){
         super.paint(g);
-        g.setColor(Color.GREEN);
+        setBackground(this.color);
        
         ImageIcon img = new ImageIcon(getClass().getResource("/javaapplication1/España.png"));
         g.drawImage(img.getImage(), this.pos, this.pos, this);
         System.out.print(this.pos);
     }
-    public void pinta(Graphics g){
-          setBackground(Color.red);
+    public void cambiaFondo(){
+        this.color=Color.green;
         
     }
         
