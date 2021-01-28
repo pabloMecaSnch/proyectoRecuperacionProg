@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package javaapplication1;
+package Vista;
 
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import entidades.Coordenadas;
 import javax.swing.ImageIcon;
 
 /**
@@ -31,7 +32,7 @@ public class MyCanvas extends Canvas{
         super.paint(g);
         setBackground(this.color);
        
-        ImageIcon img = new ImageIcon(getClass().getResource("/javaapplication1/España.png"));
+        ImageIcon img = new ImageIcon(getClass().getResource("/img/España.png"));
         g.drawImage(img.getImage(), 0, 0, this);
         if(pintaCirculo){
             g.drawOval(x, y, _TAM_CIRCULO, _TAM_CIRCULO);

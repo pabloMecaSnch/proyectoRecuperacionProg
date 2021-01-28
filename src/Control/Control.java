@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package javaapplication1;
+package Control;
 
 import java.util.List;
 import java.io.BufferedReader;
@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import entidades.Coordenadas;
+import java.io.FileWriter;
 
 /**
  *
@@ -31,12 +33,33 @@ public class Control {
     
     public Control(){
         
-        mapaAnimales = new HashMap<>();
-        mapaZonas = new HashMap<>();
-        fr = null;
-        fileAnimales = new File(".\\animales.txt");
-        fileZonas = new File(".\\datos.dat");
-        leeFAnimales();
+        FileWriter fw = null;
+        try {
+            //Inicializo este file writer con los archivos porque hay veces que el ordenador
+            //no encuentra la ruta con la clase File, pero usando FileWriter siempre la encuentra
+            //y después el File va bien.
+            fw = new FileWriter("/recursos/animales.txt", true);
+            fw.close();
+            fw = new FileWriter("/recursos/datos.dat",true);
+            fw.close();
+            
+            mapaAnimales = new HashMap<>();
+            mapaZonas = new HashMap<>();
+            fr = null;
+            
+            fileAnimales = new File("/recursos/animales.txt");
+            fileZonas = new File("/recursos/datos.dat");
+            leeFAnimales();
+        } catch (IOException ex) {
+            Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if(fw !=null)
+                    fw.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }   
     private void leeFAnimales(){
         //En este caso, todos los animales del fichero 

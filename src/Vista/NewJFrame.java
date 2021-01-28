@@ -3,14 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package javaapplication1;
+package Vista;
 
+import Vista.MyCanvas;
+import Control.Control;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.Paint;
 import java.util.ArrayList;
+import entidades.Coordenadas;
 import javax.imageio.ImageIO;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -138,7 +141,7 @@ public class NewJFrame extends javax.swing.JFrame {
                             .addComponent(BotonBuscar)
                             .addComponent(txtBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(labelPruebaBusqueda))
-                .addContainerGap(155, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,7 +176,7 @@ public class NewJFrame extends javax.swing.JFrame {
                         .addComponent(BotonBuscar)
                         .addGap(16, 16, 16)
                         .addComponent(labelPruebaBusqueda)))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();

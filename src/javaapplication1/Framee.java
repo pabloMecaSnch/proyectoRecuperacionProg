@@ -5,6 +5,10 @@
  */
 package javaapplication1;
 
+import entidades.Coordenadas;
+import Vista.NewJFrame;
+import Vista.MyCanvas;
+import Control.Control;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
@@ -105,7 +109,7 @@ public class Framee extends javax.swing.JFrame {
             }
         });
 
-        labelPruebaBusqueda.setText("Animal");
+        labelPruebaBusqueda.setText("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -182,6 +186,7 @@ public class Framee extends javax.swing.JFrame {
         Coordenadas coordenada = c.mapaZonas.get(zona);
         if(coordenada !=null){
             canvas1.setCoordenadas(coordenada);
+            this.labelPruebaBusqueda.setText("");
         }else{
             this.labelPruebaBusqueda.setText("Animal no registrado en la base de datos");
             canvas1.pintaMapa();
