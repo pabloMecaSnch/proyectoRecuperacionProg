@@ -22,31 +22,64 @@ import java.util.logging.Logger;
  */
 public class Control {
     
-    public BufferedReader br;
-    File file;
-    FileReader fr;
+    private BufferedReader br;
+    private File fileAnimales;
+    private File fileZonas;
+    private FileReader fr;
+    public HashMap<String, String> mapaAnimales;
+    public HashMap<String, Coordenadas> mapaZonas;
+    
     public Control(){
-        try {
-            fr = null;
-            file = new File(".\\animales.txt");
-            fr = new FileReader(file);
-            br = new BufferedReader(fr);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex); 
-        }
+        
+        mapaAnimales = new HashMap<>();
+        mapaZonas = new HashMap<>();
+        fr = null;
+        fileAnimales = new File(".\\animales.txt");
+        fileZonas = new File(".\\datos.dat");
+        leeFAnimales();
     }   
-    public ArrayList<String> lee(){
+    private void leeFAnimales(){
+        //En este caso, todos los animales del fichero 
+        //Pertenecen a Galicia para simplificar el código
         try {
-            ArrayList<String> zonas = new ArrayList<String>();
+            //ArrayList<String> zonas = new ArrayList<String>();
+            fr = new FileReader(fileAnimales);
+            br = new BufferedReader(fr);
             while(br.ready()){
                 String linea = br.readLine();
+                System.out.println(linea);
+                //zonas.add(linea);
+                mapaAnimales.put(linea, "Galicia");
+            }
+            //return zonas;
+        } catch (IOException ex) {
+            System.out.println("Archivo no encontrado");
+        }
+       //return null;
+    }
+    public ArrayList<String> leeFZonas(){
+        try {
+            ArrayList<String> zonas = new ArrayList<String>();
+            fr = new FileReader(fileZonas);
+            br = new BufferedReader(fr);
+            while(br.ready()){
+                String linea = br.readLine();
+                String[] datos = linea.split(":");
+                mapaZonas.put(
+                        datos[0],
+                        new Coordenadas(Integer.parseInt(datos[1]), Integer.parseInt(datos[2])
+                        ) );
                 System.out.println(linea);
                 zonas.add(linea);
             }
              return zonas;
         } catch (IOException ex) {
-            Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Archivo no encontrado");
         }
        return null;
+    }
+    public String buscaAnimal(String nombre){
+        String animal = mapaAnimales.get(nombre);
+        return animal;
     }
 }

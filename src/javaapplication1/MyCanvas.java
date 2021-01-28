@@ -16,30 +16,38 @@ import javax.swing.ImageIcon;
  * @author Usuario
  */
 public class MyCanvas extends Canvas{
-    public int pos;
     public Color color;
+    private boolean pintaCirculo;
+    private int x;
+    private int y;
+    private final int _TAM_CIRCULO=20;
     public MyCanvas(){
-        this.pos = 0;
-        this.color=Color.BLACK;
-        setBackground(Color.RED);
+        this.pintaCirculo = false;
+        this.x = 0;
+        this.y = 0;
     }
-    public MyCanvas(int posicion){
-        this.pos =posicion;
-        setBackground(Color.GREEN);
-    }
-    
     @Override
     public void paint(Graphics g){
         super.paint(g);
         setBackground(this.color);
        
         ImageIcon img = new ImageIcon(getClass().getResource("/javaapplication1/España.png"));
-        g.drawImage(img.getImage(), this.pos, this.pos, this);
-        System.out.print(this.pos);
+        g.drawImage(img.getImage(), 0, 0, this);
+        if(pintaCirculo){
+            g.drawOval(x, y, _TAM_CIRCULO, _TAM_CIRCULO);
+        }
     }
     public void cambiaFondo(){
         this.color=Color.green;
         
+    }
+    public void setCoordenadas(Coordenadas c){
+        this.pintaCirculo = true;
+        x = c.getX();
+        y = c.getY();
+    }
+    public void pintaMapa(){
+        this.pintaCirculo = false;
     }
         
     }

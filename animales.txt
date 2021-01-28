@@ -1,7 +1,5 @@
-
-perro
-gato
-garza
-lince
-toro
-vaca
+Lobo
+Oso pardo
+Zorro
+Corzo
+Azor
