@@ -33,7 +33,7 @@ public class Control {
     private FileReader fr;
     public HashMap<String, String> mapaAnimales;
     public HashMap<String, Zona> mapaZonas;
-    FileWriter fw;
+    private FileWriter fw;
     public Control(){
         
         
@@ -50,7 +50,7 @@ public class Control {
             mapaZonas = new HashMap<>();
             fr = null;
             
-            fileAnimales = new File("sr./recursos/animales.txt");
+            fileAnimales = new File("src./recursos/animales.txt");
             fileZonas = new File("src./recursos/prueba.bin");
             leeFAnimales();
         } catch (IOException ex) {
@@ -84,8 +84,8 @@ public class Control {
        //return null;
     }
     public ArrayList<String> leeFZonas(){
+         ArrayList<String> zonas = new ArrayList<String>();
         try {
-            ArrayList<String> zonas = new ArrayList<String>();
             ObjectInputStream ois = new ObjectInputStream(
                     new FileInputStream(fileZonas));
             Object aux = ois.readObject();
@@ -104,7 +104,7 @@ public class Control {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
         }
-       return null;
+       return zonas;
     }
     public String buscaAnimal(String nombre){
         String animal = mapaAnimales.get(nombre);
