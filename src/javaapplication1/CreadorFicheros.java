@@ -42,9 +42,9 @@ public class CreadorFicheros {
         FileOutputStream fos = null;
         
         DataOutputStream salida = null;
-        FileWriter fw = new FileWriter(".\\animales.txt",true);
-        
-        File file = new File(".\\animales.txt");
+        FileWriter fw = new FileWriter("src.\\recursos\\prueba.bin",true);
+        fw.close();
+        File file = new File("src.\\recursos\\prueba.bin");
         FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);
         String linea;
@@ -63,7 +63,7 @@ public class CreadorFicheros {
                 num++;
                 String linea_espaciada = linea.concat("\n");
                 //fos.write(linea_espaciada.getBytes());
-                fw.write(linea_espaciada);
+                salida.write(linea_espaciada.getBytes());
                 linea = sc.nextLine();
                 
             }

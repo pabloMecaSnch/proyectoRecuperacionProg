@@ -119,6 +119,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/img/Espa&#xf1;a.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Introducir nuevo animal"/>
       </Properties>
     </Component>

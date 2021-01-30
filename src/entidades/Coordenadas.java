@@ -5,11 +5,13 @@
  */
 package entidades;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Pablo
  */
-public class Coordenadas {
+public class Coordenadas implements Serializable{
     private int x;
     private int y;
     

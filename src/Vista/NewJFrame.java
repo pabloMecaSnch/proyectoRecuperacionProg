@@ -89,6 +89,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
         canvas1 = new MyCanvas();
 
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/España.png"))); // NOI18N
         jLabel3.setText("Introducir nuevo animal");
 
         jLabel4.setText("Nombre:");
@@ -184,8 +185,8 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void BotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBuscarActionPerformed
         String linea =c.buscaAnimal(this.txtBuscador.getText());
-        Coordenadas coordenada = c.mapaZonas.get(linea);
-        this.labelPruebaBusqueda.setText(coordenada.getX()+" "+coordenada.getY());
+        //Coordenadas coordenada = c.mapaZonas.get(linea);
+        //this.labelPruebaBusqueda.setText(coordenada.getX()+" "+coordenada.getY());
         
         
     }//GEN-LAST:event_BotonBuscarActionPerformed

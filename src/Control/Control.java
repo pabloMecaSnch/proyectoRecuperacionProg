@@ -16,7 +16,10 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import entidades.Coordenadas;
+import entidades.Zona;
+import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.ObjectInputStream;
 
 /**
  *
@@ -29,30 +32,30 @@ public class Control {
     private File fileZonas;
     private FileReader fr;
     public HashMap<String, String> mapaAnimales;
-    public HashMap<String, Coordenadas> mapaZonas;
-    
+    public HashMap<String, Zona> mapaZonas;
+    FileWriter fw;
     public Control(){
         
-        FileWriter fw = null;
+        
         try {
             //Inicializo este file writer con los archivos porque hay veces que el ordenador
             //no encuentra la ruta con la clase File, pero usando FileWriter siempre la encuentra
             //y después el File va bien.
-            fw = new FileWriter("/recursos/animales.txt", true);
+            fw = new FileWriter("src./recursos/animales.txt", true);
             fw.close();
-            fw = new FileWriter("/recursos/datos.dat",true);
+            fw = new FileWriter("src./recursos/prueba.bin",true);
             fw.close();
             
             mapaAnimales = new HashMap<>();
             mapaZonas = new HashMap<>();
             fr = null;
             
-            fileAnimales = new File("/recursos/animales.txt");
-            fileZonas = new File("/recursos/datos.dat");
+            fileAnimales = new File("sr./recursos/animales.txt");
+            fileZonas = new File("src./recursos/prueba.bin");
             leeFAnimales();
         } catch (IOException ex) {
-            Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+            System.out.println("Archivo no encontrado");
+        }finally {
             try {
                 if(fw !=null)
                     fw.close();
@@ -83,21 +86,23 @@ public class Control {
     public ArrayList<String> leeFZonas(){
         try {
             ArrayList<String> zonas = new ArrayList<String>();
-            fr = new FileReader(fileZonas);
-            br = new BufferedReader(fr);
-            while(br.ready()){
-                String linea = br.readLine();
-                String[] datos = linea.split(":");
-                mapaZonas.put(
-                        datos[0],
-                        new Coordenadas(Integer.parseInt(datos[1]), Integer.parseInt(datos[2])
-                        ) );
-                System.out.println(linea);
-                zonas.add(linea);
+            ObjectInputStream ois = new ObjectInputStream(
+                    new FileInputStream(fileZonas));
+            Object aux = ois.readObject();
+            while(aux!=null){
+                if (aux instanceof Zona){
+                    mapaZonas.put(((Zona) aux).nombre, ((Zona)aux) );
+                    zonas.add(((Zona) aux).nombre);
+                    System.out.println(aux);
+                    aux = ois.readObject();
+                    
+                }
             }
              return zonas;
         } catch (IOException ex) {
             System.out.println("Archivo no encontrado");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
         }
        return null;
     }

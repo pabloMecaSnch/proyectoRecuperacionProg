@@ -9,6 +9,7 @@ import entidades.Coordenadas;
 import Vista.NewJFrame;
 import Vista.MyCanvas;
 import Control.Control;
+import entidades.Zona;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
@@ -183,9 +184,9 @@ public class Framee extends javax.swing.JFrame {
 
     private void BotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {                                            
         String zona =c.buscaAnimal(this.txtBuscador.getText());
-        Coordenadas coordenada = c.mapaZonas.get(zona);
-        if(coordenada !=null){
-            canvas1.setCoordenadas(coordenada);
+        Zona z = c.mapaZonas.get(zona);
+        if(z !=null){
+            canvas1.setCoordenadas(z.coordenadas);
             this.labelPruebaBusqueda.setText("");
         }else{
             this.labelPruebaBusqueda.setText("Animal no registrado en la base de datos");
