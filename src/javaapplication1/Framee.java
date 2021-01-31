@@ -5,11 +5,13 @@
  */
 package javaapplication1;
 
-import entidades.Coordenadas;
+
 import Vista.NewJFrame;
 import Vista.MyCanvas;
 import Control.Control;
-import entidades.Zona;
+import dao.Animal;
+import dao.Zona;
+import dao.ZonaJpaController;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
@@ -17,6 +19,8 @@ import java.awt.Image;
 import java.awt.Paint;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -38,9 +42,10 @@ public class Framee extends javax.swing.JFrame {
      */
 
     public Framee() {
+       
         ArrayList<String> zonas = new ArrayList<String>();
         c = new Control();
-        zonas = c.leeFZonas();
+        zonas = c.getZonas();
  
         String[] zArray = new String[zonas.size()];
         //Conversion
@@ -74,7 +79,7 @@ public class Framee extends javax.swing.JFrame {
         canvas1 = new MyCanvas();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        textAnimalNuevo = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
         BotonNuevo = new javax.swing.JButton();
@@ -96,7 +101,11 @@ public class Framee extends javax.swing.JFrame {
         jLabel1.setText("Zona:");
 
         BotonNuevo.setText("Introducir");
-
+        BotonNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonNuevoAnimal(evt);
+            }
+        });
         jLabel5.setText("---------------------------------------------------------------------------------");
 
         jLabel6.setText("Buscar animal");
@@ -128,8 +137,8 @@ public class Framee extends javax.swing.JFrame {
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBox2, 0, 89, Short.MAX_VALUE)
-                            .addComponent(jTextField1))
+                            .addComponent(jComboBox2, 0, 180, Short.MAX_VALUE)
+                            .addComponent(textAnimalNuevo))
                         .addGap(42, 42, 42)
                         .addComponent(BotonNuevo))
                     .addComponent(jLabel5)
@@ -156,7 +165,7 @@ public class Framee extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel4)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(textAnimalNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel1)
@@ -183,17 +192,26 @@ public class Framee extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void BotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        String zona =c.buscaAnimal(this.txtBuscador.getText());
-        Zona z = c.mapaZonas.get(zona);
-        if(z !=null){
-            canvas1.setCoordenadas(z.coordenadas);
+        Zona zona =c.getoZonaFromAnimal(this.txtBuscador.getText());
+        if(zona !=null){
+            canvas1.setCoordenadas(zona.getCoordenadaX(),zona.getCoordenadaY());
             this.labelPruebaBusqueda.setText("");
         }else{
             this.labelPruebaBusqueda.setText("Animal no registrado en la base de datos");
             canvas1.pintaMapa();
         }
         canvas1.repaint();
-    }                                           
+    }
+      private void BotonNuevoAnimal(java.awt.event.ActionEvent evt) {                                  
+        String animal = this.textAnimalNuevo.getText();
+        String zonaSelected = (String)this.jComboBox2.getSelectedItem();
+        Animal newAnimal = new Animal();
+        newAnimal.setNombre(animal);
+        Zona z = c.getDatosZona(zonaSelected);
+        newAnimal.setZonaidZona(z);
+        c.anadirAnimal(newAnimal);
+          
+    } 
 
     /**
      * @param args the command line arguments
@@ -244,7 +262,7 @@ public class Framee extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField textAnimalNuevo;
     private javax.swing.JLabel labelPruebaBusqueda;
     private javax.swing.JTextField txtBuscador;
     // End of variables declaration                   

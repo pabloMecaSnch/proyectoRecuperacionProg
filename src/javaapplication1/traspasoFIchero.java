@@ -7,7 +7,7 @@ package javaapplication1;
 
 import Control.Control;
 import entidades.Coordenadas;
-import entidades.Zona;
+import dao.Zona;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -25,14 +25,17 @@ public class traspasoFIchero {
     public static void main(String[] arg){
         File archivoBinario = new File("src./recursos/prueba.bin");
         Control c = new Control();
-        ArrayList<String> zonas = c.leeFZonas();
+        ArrayList<String> zonas = c.getZonas();
         try {
             ObjectOutputStream oos = new ObjectOutputStream(
                     new FileOutputStream(archivoBinario));
             
             for(String zona:zonas){
                 String[] data = zona.split(":");
-                Zona z = new Zona(data[0], new Coordenadas(Integer.parseInt(data[1]), Integer.parseInt(data[2])) );
+                Zona z = new Zona();
+                z.setNombreZona(data[0]);
+                z.setCoordenadaX(Integer.parseInt(data[1]));
+                z.setCoordenadaY(Integer.parseInt(data[2]));
                 oos.writeObject(z);
             }
             oos.close();

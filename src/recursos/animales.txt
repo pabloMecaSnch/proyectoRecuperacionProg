@@ -1,5 +1,6 @@
-Lobo
-Oso pardo
-Zorro
-Corzo
-Azor
+Lobo:Galicia
+Oso pardo:Galicia
+Zorro:Galicia
+Corzo:Galicia
+Azor:Galicia
+Lince:Andalucia

@@ -5,6 +5,7 @@
  */
 package Control;
 
+import dao.Animal;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,10 +17,14 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import entidades.Coordenadas;
-import entidades.Zona;
+import dao.Zona;
+import dao.ZonaJpaController;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.ObjectInputStream;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import org.eclipse.persistence.exceptions.DatabaseException;
 
 /**
  *
@@ -31,8 +36,8 @@ public class Control {
     private File fileAnimales;
     private File fileZonas;
     private FileReader fr;
-    public HashMap<String, String> mapaAnimales;
-    public HashMap<String, Zona> mapaZonas;
+    private HashMap<String, Zona> mapaAnimales;
+    private HashMap<String, Zona> mapaZonas;
     private FileWriter fw;
     public Control(){
         
@@ -52,6 +57,7 @@ public class Control {
             
             fileAnimales = new File("src./recursos/animales.txt");
             fileZonas = new File("src./recursos/prueba.bin");
+            leeFZonas();
             leeFAnimales();
         } catch (IOException ex) {
             System.out.println("Archivo no encontrado");
@@ -75,7 +81,8 @@ public class Control {
                 String linea = br.readLine();
                 System.out.println(linea);
                 //zonas.add(linea);
-                mapaAnimales.put(linea, "Galicia");
+                String[] animal = linea.split(":");
+                mapaAnimales.put(animal[0],mapaZonas.get(animal[1]) );
             }
             //return zonas;
         } catch (IOException ex) {
@@ -83,31 +90,53 @@ public class Control {
         }
        //return null;
     }
-    public ArrayList<String> leeFZonas(){
-         ArrayList<String> zonas = new ArrayList<String>();
+    public void leeFZonas(){
+         
+         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("proyectoRecuperacionProgPU");
+         //ZonaJpaController controlZona = new ZonaJpaController(emf);
         try {
             ObjectInputStream ois = new ObjectInputStream(
                     new FileInputStream(fileZonas));
             Object aux = ois.readObject();
             while(aux!=null){
                 if (aux instanceof Zona){
-                    mapaZonas.put(((Zona) aux).nombre, ((Zona)aux) );
-                    zonas.add(((Zona) aux).nombre);
-                    System.out.println(aux);
-                    aux = ois.readObject();
-                    
+                    mapaZonas.put(((Zona) aux).getNombreZona(), ((Zona)aux) );
+                    System.out.println(((Zona) aux).getNombreZona());
+                    //Las siguientes líneas comentadas las usé para introducir los datos en la base de datos
+                    //a medidia que los leía del fichero
+                   /* Zona z = new Zona();
+                    z.setNombreZona(((Zona) aux).getNombreZona());
+                    z.setCoordenadaX(((Zona) aux).getCoordenadaX());
+                    z.setCoordenadaY(((Zona) aux).getCoordenadaY());
+                    controlZona.create(z);*/
+                    aux = ois.readObject();   
                 }
             }
-             return zonas;
         } catch (IOException ex) {
             System.out.println("Archivo no encontrado");
+       // } catch (ClassNotFoundException ex) {
+        //    Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+        }catch(DatabaseException e){
+            System.out.println(e);
         }
-       return zonas;
     }
-    public String buscaAnimal(String nombre){
-        String animal = mapaAnimales.get(nombre);
-        return animal;
+    public Zona getoZonaFromAnimal(String nombre){
+        Zona zona = mapaAnimales.get(nombre);
+        return zona;
+    }
+    public Zona getDatosZona(String zona){
+        return mapaZonas.get(zona);
+    }
+    public void anadirAnimal(Animal animal){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("proyectoRecuperacionProgPU");
+        ZonaJpaController controlZona = new ZonaJpaController(emf);
+        mapaAnimales.put(animal.getNombre(), animal.getZonaidZona());
+    }
+    public ArrayList<String> getZonas(){
+        ArrayList<String> zonas = new ArrayList<>();
+        mapaZonas.forEach((clave,valor)-> zonas.add(valor.getNombreZona()) );
+        return zonas;
     }
 }

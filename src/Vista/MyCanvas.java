@@ -21,7 +21,7 @@ public class MyCanvas extends Canvas{
     private boolean pintaCirculo;
     private int x;
     private int y;
-    private final int _TAM_CIRCULO=20;
+    private final int _TAM_CIRCULO=30;
     public MyCanvas(){
         this.pintaCirculo = false;
         this.x = 0;
@@ -42,10 +42,10 @@ public class MyCanvas extends Canvas{
         this.color=Color.green;
         
     }
-    public void setCoordenadas(Coordenadas c){
+    public void setCoordenadas(int x, int y){
         this.pintaCirculo = true;
-        x = c.getX();
-        y = c.getY();
+        this.x = x;
+        this.y = y;
     }
     public void pintaMapa(){
         this.pintaCirculo = false;

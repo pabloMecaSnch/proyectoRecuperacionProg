@@ -38,7 +38,7 @@ public class NewJFrame extends javax.swing.JFrame {
     public NewJFrame() {
         ArrayList<String> zonas = new ArrayList<String>();
         c = new Control();
-        zonas = c.leeFZonas();
+        zonas = c.getZonas();
  
         String[] zArray = new String[zonas.size()];
         //Conversion
@@ -96,7 +96,18 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jLabel1.setText("Zona:");
 
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
+
         BotonNuevo.setText("Introducir");
+        BotonNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonNuevoAnimal(evt);
+            }
+        });
 
         jLabel5.setText("---------------------------------------------------------------------------------");
 
@@ -128,10 +139,10 @@ public class NewJFrame extends javax.swing.JFrame {
                             .addComponent(jLabel4)
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBox2, 0, 89, Short.MAX_VALUE)
-                            .addComponent(jTextField1))
-                        .addGap(42, 42, 42)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(BotonNuevo))
                     .addComponent(jLabel5)
                     .addComponent(jLabel6)
@@ -184,12 +195,22 @@ public class NewJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBuscarActionPerformed
-        String linea =c.buscaAnimal(this.txtBuscador.getText());
+        //String linea =c.getoZonaFromAnimal(this.txtBuscador.getText());
         //Coordenadas coordenada = c.mapaZonas.get(linea);
         //this.labelPruebaBusqueda.setText(coordenada.getX()+" "+coordenada.getY());
         
         
     }//GEN-LAST:event_BotonBuscarActionPerformed
+
+    private void BotonNuevoAnimal(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonNuevoAnimal
+         String animal = this.jTextField1.getText();
+        String zonaSelected = (String)this.jComboBox2.getSelectedItem();
+          System.out.println(animal+"   "+zonaSelected);
+    }//GEN-LAST:event_BotonNuevoAnimal
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox2ActionPerformed
 
     /**
      * @param args the command line arguments
