@@ -197,7 +197,7 @@ public class ZonaJpaController implements Serializable {
             em.close();
         }
     }
-    public Zona fingZonaByName(String nombre){
+    public Zona findZonaByName(String nombre){
         EntityManager em = getEntityManager();
         try{
             Query query = em.createNamedQuery("Zona.findByNombreZona");

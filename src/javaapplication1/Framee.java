@@ -89,7 +89,7 @@ public class Framee extends javax.swing.JFrame {
         txtBuscador = new javax.swing.JTextField();
         BotonBuscar = new javax.swing.JButton();
         labelPruebaBusqueda = new javax.swing.JLabel();
-
+        txtInfoNuevoAnimal = new javax.swing.JLabel();
         jLabel2.setText("jLabel2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -121,7 +121,7 @@ public class Framee extends javax.swing.JFrame {
 
         labelPruebaBusqueda.setText("");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,16 +130,15 @@ public class Framee extends javax.swing.JFrame {
                 .addComponent(canvas1, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBox2, 0, 180, Short.MAX_VALUE)
-                            .addComponent(textAnimalNuevo))
-                        .addGap(42, 42, 42)
+                            .addComponent(textAnimalNuevo)
+                            .addComponent(jComboBox2, 0, 125, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(BotonNuevo))
                     .addComponent(jLabel5)
                     .addComponent(jLabel6)
@@ -149,8 +148,9 @@ public class Framee extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(BotonBuscar)
                             .addComponent(txtBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(labelPruebaBusqueda))
-                .addContainerGap(155, Short.MAX_VALUE))
+                    .addComponent(labelPruebaBusqueda)
+                    .addComponent(txtInfoNuevoAnimal, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,10 +159,9 @@ public class Framee extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(canvas1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(30, 30, 30)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel4)
                                     .addComponent(textAnimalNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -171,9 +170,11 @@ public class Framee extends javax.swing.JFrame {
                                     .addComponent(jLabel1)
                                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(17, 17, 17)
+                                .addGap(41, 41, 41)
                                 .addComponent(BotonNuevo)))
-                        .addGap(41, 41, 41)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtInfoNuevoAnimal, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9)
                         .addComponent(jLabel5)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel6)
@@ -185,7 +186,7 @@ public class Framee extends javax.swing.JFrame {
                         .addComponent(BotonBuscar)
                         .addGap(16, 16, 16)
                         .addComponent(labelPruebaBusqueda)))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -204,12 +205,22 @@ public class Framee extends javax.swing.JFrame {
     }
       private void BotonNuevoAnimal(java.awt.event.ActionEvent evt) {                                  
         String animal = this.textAnimalNuevo.getText();
-        String zonaSelected = (String)this.jComboBox2.getSelectedItem();
-        Animal newAnimal = new Animal();
-        newAnimal.setNombre(animal);
-        Zona z = c.getDatosZona(zonaSelected);
-        newAnimal.setZonaidZona(z);
-        c.anadirAnimal(newAnimal);
+        if(!animal.isEmpty() ){
+            txtInfoNuevoAnimal.setText("");
+            String zonaSelected = (String)this.jComboBox2.getSelectedItem();
+            Animal newAnimal = new Animal();
+            newAnimal.setNombre(animal);
+            Zona z = c.buscaZona(zonaSelected);
+            System.out.println(z.hashCode());
+            if(z != null){
+                newAnimal.setZonaidZona(z);
+                c.anadirAnimal(newAnimal);
+                this.textAnimalNuevo.setText("");
+                txtInfoNuevoAnimal.setText("Animal correctamente introducido");
+            }
+        }else{
+            txtInfoNuevoAnimal.setText("Introduzca un nombre");
+        }
           
     } 
 
@@ -265,5 +276,6 @@ public class Framee extends javax.swing.JFrame {
     private javax.swing.JTextField textAnimalNuevo;
     private javax.swing.JLabel labelPruebaBusqueda;
     private javax.swing.JTextField txtBuscador;
+    private javax.swing.JLabel txtInfoNuevoAnimal;
     // End of variables declaration                   
 }

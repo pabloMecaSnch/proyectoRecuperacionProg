@@ -6,6 +6,7 @@
 package Control;
 
 import dao.Animal;
+import dao.AnimalJpaController;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.File;
@@ -129,14 +130,29 @@ public class Control {
     public Zona getDatosZona(String zona){
         return mapaZonas.get(zona);
     }
+    
     public void anadirAnimal(Animal animal){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("proyectoRecuperacionProgPU");
-        ZonaJpaController controlZona = new ZonaJpaController(emf);
-        mapaAnimales.put(animal.getNombre(), animal.getZonaidZona());
+        
+        if( mapaAnimales.get(animal.getNombre()) == null ){
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("proyectoRecuperacionProgPU");
+            AnimalJpaController animalController = new AnimalJpaController(emf);
+            mapaAnimales.put(animal.getNombre(), animal.getZonaidZona());
+            animalController.create(animal);
+        }else{
+            System.out.println("Animal ya registrado");
+        }
+        
     }
+    
     public ArrayList<String> getZonas(){
         ArrayList<String> zonas = new ArrayList<>();
         mapaZonas.forEach((clave,valor)-> zonas.add(valor.getNombreZona()) );
         return zonas;
+    }
+    public Zona buscaZona(String nombre){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("proyectoRecuperacionProgPU");
+        ZonaJpaController zonaController = new ZonaJpaController(emf);
+        Zona z = zonaController.findZonaByName(nombre);
+        return z;
     }
 }
