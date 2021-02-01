@@ -5,23 +5,8 @@
  */
 package Vista;
 
-import Vista.MyCanvas;
 import Control.Control;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
-import java.awt.Image;
-import java.awt.Paint;
 import java.util.ArrayList;
-import entidades.Coordenadas;
-import javax.imageio.ImageIO;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.ListModel;
-import javax.swing.event.ListDataListener;
 
 /**
  *
@@ -44,7 +29,7 @@ public class NewJFrame extends javax.swing.JFrame {
         //Conversion
         zonas.toArray(zArray);
         initComponents();
-         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(zArray));
+         opcionesZona.setModel(new javax.swing.DefaultComboBoxModel<>(zArray));
         /*for(String z : zonas){
             jComboBox2.addItem(z);
         }*/
@@ -71,9 +56,9 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         canvas1 = new java.awt.Canvas();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtNuevoAnimal = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        opcionesZona = new javax.swing.JComboBox<>();
         BotonNuevo = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -82,6 +67,10 @@ public class NewJFrame extends javax.swing.JFrame {
         BotonBuscar = new javax.swing.JButton();
         labelPruebaBusqueda = new javax.swing.JLabel();
         txtInfoNuevoAnimal = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        opcionesBorrar = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        BotonEliminar = new javax.swing.JButton();
 
         jLabel2.setText("jLabel2");
 
@@ -93,9 +82,9 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jLabel1.setText("Zona:");
 
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+        opcionesZona.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+                opcionesZonaActionPerformed(evt);
             }
         });
 
@@ -119,6 +108,18 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setText("Nombre");
+
+        opcionesBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionesBorrarActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("---------------------------------------------------------------------------------");
+
+        BotonEliminar.setText("Eliminar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -126,62 +127,80 @@ public class NewJFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(canvas1, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(jComboBox2, 0, 125, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BotonNuevo))
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(BotonBuscar)
-                            .addComponent(txtBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(labelPruebaBusqueda)
-                    .addComponent(txtInfoNuevoAnimal, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel1))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtNuevoAnimal)
+                                    .addComponent(opcionesZona, 0, 125, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(BotonNuevo))
+                            .addComponent(jLabel5)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(opcionesBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(BotonEliminar))
+                            .addComponent(jLabel6)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(27, 27, 27)
+                                .addComponent(BotonBuscar))
+                            .addComponent(labelPruebaBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtInfoNuevoAnimal, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel8)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(72, 72, 72)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel4)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtNuevoAnimal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel1)
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(opcionesZona, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(83, 83, 83)
                                 .addComponent(BotonNuevo)))
+                        .addGap(18, 18, 18)
+                        .addComponent(txtInfoNuevoAnimal, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtInfoNuevoAnimal, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(9, 9, 9)
                         .addComponent(jLabel5)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(opcionesBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BotonEliminar))
+                        .addGap(36, 36, 36)
+                        .addComponent(jLabel8)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel6)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
-                            .addComponent(txtBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(BotonBuscar)
-                        .addGap(16, 16, 16)
-                        .addComponent(labelPruebaBusqueda))
+                            .addComponent(txtBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BotonBuscar))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(labelPruebaBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addComponent(canvas1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -200,14 +219,21 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_BotonBuscarActionPerformed
 
     private void BotonNuevoAnimal(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonNuevoAnimal
-         String animal = this.jTextField1.getText();
-        String zonaSelected = (String)this.jComboBox2.getSelectedItem();
+         String animal = this.txtNuevoAnimal.getText();
+        String zonaSelected = (String)this.opcionesZona.getSelectedItem();
           System.out.println(animal+"   "+zonaSelected);
     }//GEN-LAST:event_BotonNuevoAnimal
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void opcionesZonaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionesZonaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+    }//GEN-LAST:event_opcionesZonaActionPerformed
+
+    private void opcionesBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionesBorrarActionPerformed
+        ArrayList<String> animales = c.getAnimales();
+        String [] animalesArray = new String[animales.size()];
+        animales.toArray(animalesArray);
+        this.opcionesZona.setModel(new javax.swing.DefaultComboBoxModel<>(animalesArray));
+    }//GEN-LAST:event_opcionesBorrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -248,18 +274,22 @@ public class NewJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotonBuscar;
+    private javax.swing.JButton BotonEliminar;
     private javax.swing.JButton BotonNuevo;
     private java.awt.Canvas canvas1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel labelPruebaBusqueda;
+    private javax.swing.JComboBox<String> opcionesBorrar;
+    private javax.swing.JComboBox<String> opcionesZona;
     private javax.swing.JTextField txtBuscador;
     private javax.swing.JLabel txtInfoNuevoAnimal;
+    private javax.swing.JTextField txtNuevoAnimal;
     // End of variables declaration//GEN-END:variables
 }

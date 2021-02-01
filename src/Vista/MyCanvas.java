@@ -8,8 +8,6 @@ package Vista;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
-import entidades.Coordenadas;
 import javax.swing.ImageIcon;
 
 /**

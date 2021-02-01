@@ -34,7 +34,7 @@ public class CreadorFicheros {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
+    public void crea() throws IOException {
         // NewJFrame nf = new NewJFrame();
         // TODO code application logic here
         

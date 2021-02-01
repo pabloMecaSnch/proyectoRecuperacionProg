@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -146,6 +147,20 @@ public class AnimalJpaController implements Serializable {
         try {
             return em.find(Animal.class, id);
         } finally {
+            em.close();
+        }
+    }
+    public Animal findAnimalByName(String name){
+        EntityManager em = getEntityManager();
+        try{
+           Query query = em.createNamedQuery("Animal.findByNombre");
+           query.setParameter("nombre", name);
+           Animal animal = (Animal)query.getSingleResult();
+           return animal;
+        }catch(NoResultException e){
+            return null;
+        }
+            finally{
             em.close();
         }
     }

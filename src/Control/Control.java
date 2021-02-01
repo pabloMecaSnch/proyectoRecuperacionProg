@@ -10,16 +10,15 @@ import dao.AnimalJpaController;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import entidades.Coordenadas;
 import dao.Zona;
 import dao.ZonaJpaController;
+import dao.exceptions.NonexistentEntityException;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.ObjectInputStream;
@@ -40,16 +39,22 @@ public class Control {
     private HashMap<String, Zona> mapaAnimales;
     private HashMap<String, Zona> mapaZonas;
     private FileWriter fw;
+    
+    private EntityManagerFactory emf;
+    private ZonaJpaController zonaController;
+    private AnimalJpaController animalController;
+    
     public Control(){
-        
-        
+        this.emf = Persistence.createEntityManagerFactory("proyectoRecuperacionProgPU");
+        this.zonaController = new ZonaJpaController(emf);
+        this.animalController = new AnimalJpaController(emf);
         try {
             //Inicializo este file writer con los archivos porque hay veces que el ordenador
             //no encuentra la ruta con la clase File, pero usando FileWriter siempre la encuentra
             //y después el File va bien.
             fw = new FileWriter("src./recursos/animales.txt", true);
             fw.close();
-            fw = new FileWriter("src./recursos/prueba.bin",true);
+            fw = new FileWriter("src./recursos/zonas.bin",true);
             fw.close();
             
             mapaAnimales = new HashMap<>();
@@ -57,7 +62,7 @@ public class Control {
             fr = null;
             
             fileAnimales = new File("src./recursos/animales.txt");
-            fileZonas = new File("src./recursos/prueba.bin");
+            fileZonas = new File("src./recursos/zonas.bin");
             leeFZonas();
             leeFAnimales();
         } catch (IOException ex) {
@@ -124,22 +129,30 @@ public class Control {
         }
     }
     public Zona getoZonaFromAnimal(String nombre){
-        Zona zona = mapaAnimales.get(nombre);
+        Zona zona = new Zona();
+        zona = mapaAnimales.get(nombre);
+        if(zona == null){
+            zona = buscarZonaEnBase(nombre);
+        }
         return zona;
     }
     public Zona getDatosZona(String zona){
         return mapaZonas.get(zona);
     }
     
-    public void anadirAnimal(Animal animal){
+    public boolean anadirAnimal(Animal animal){
         
         if( mapaAnimales.get(animal.getNombre()) == null ){
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("proyectoRecuperacionProgPU");
-            AnimalJpaController animalController = new AnimalJpaController(emf);
-            mapaAnimales.put(animal.getNombre(), animal.getZonaidZona());
-            animalController.create(animal);
+            if(this.animalController.findAnimalByName(animal.getNombre()) == null){
+                mapaAnimales.put(animal.getNombre(), animal.getZonaidZona());
+                this.animalController.create(animal);
+                return true;
+            }else{
+                return false;
+            }
         }else{
             System.out.println("Animal ya registrado");
+            return false;
         }
         
     }
@@ -154,5 +167,42 @@ public class Control {
         ZonaJpaController zonaController = new ZonaJpaController(emf);
         Zona z = zonaController.findZonaByName(nombre);
         return z;
+    }
+
+    private Zona buscarZonaEnBase(String nombre) {
+        Zona zona = new Zona();
+        Animal animal = new Animal();
+        animal = this.animalController.findAnimalByName(nombre);
+        if(animal !=null){
+            zona =  this.zonaController.findZona(animal.getZonaidZona().getIdZona());
+        }else{
+            zona = null;
+        }
+        return zona;
+    }
+    public boolean borraAnimal(String nombre){
+        boolean borrado = false;
+        boolean borradoBase = true;
+        try {
+            
+        if(mapaAnimales.containsKey(nombre)){
+            mapaAnimales.remove(nombre);
+            borrado=true;
+        }
+        animalController.destroy( animalController.findAnimalByName(nombre).getIdAnimal() );
+        } catch (NonexistentEntityException ex) {
+            ex.printStackTrace();
+            borradoBase = false;
+        }catch(NullPointerException ex){
+            borradoBase = false;
+        }
+        return (borrado || borradoBase);
+    }
+    public ArrayList<String> getAnimales(){
+        ArrayList<String> animales = new ArrayList<>();
+        List<Animal> animalesBD = this.animalController.findAnimalEntities();
+        this.mapaAnimales.forEach((clave,valor)->animales.add(clave));
+        animalesBD.forEach((animal)->animales.add(animal.getNombre()));
+        return animales;
     }
 }

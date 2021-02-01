@@ -6,10 +6,8 @@
 package javaapplication1;
 
 import Control.Control;
-import entidades.Coordenadas;
 import dao.Zona;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -22,7 +20,7 @@ import java.util.logging.Logger;
  * @author Usuario
  */
 public class traspasoFIchero {
-    public static void main(String[] arg){
+    public void traspasa(){
         File archivoBinario = new File("src./recursos/prueba.bin");
         Control c = new Control();
         ArrayList<String> zonas = c.getZonas();
