@@ -30,7 +30,8 @@ public class MyCanvas extends Canvas{
         super.paint(g);
         setBackground(this.color);
        
-        ImageIcon img = new ImageIcon(getClass().getResource("/img/España.png"));
+        //ImageIcon img = new ImageIcon(getClass().getResource("src./img/España_1.png"));
+        ImageIcon img = new ImageIcon("src./img/España.png");
         g.drawImage(img.getImage(), 0, 0, this);
         if(pintaCirculo){
             g.drawOval(x, y, _TAM_CIRCULO, _TAM_CIRCULO);

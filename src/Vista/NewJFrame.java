@@ -78,6 +78,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
         canvas1 = new MyCanvas();
 
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/España.png"))); // NOI18N
         jLabel4.setText("Nombre:");
 
         jLabel1.setText("Zona:");
@@ -204,7 +205,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addComponent(canvas1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
