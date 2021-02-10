@@ -35,6 +35,7 @@ public class ConexionBD {
     private String[] columnas;
     private String usuario;
     private String pass;
+    
     public ConexionBD(String tipo,String nombreBD,String usuario,String pass){
         url="jdbc:mysql://localhost:3306/"+nombreBD+"?serverTimezone=GMT";
         this.usuario=usuario;
@@ -75,7 +76,7 @@ public class ConexionBD {
             this.registros=s.executeQuery(sql);
             metadatos=(ResultSetMetaData) registros.getMetaData();
             numeroColumnas=metadatos.getColumnCount();
-            this.nombreColumnas();
+           
             System.out.println(registros.next());
             return registros;
 
@@ -83,24 +84,18 @@ public class ConexionBD {
             return null;
         }
     }
+   //Método utilizado para las gestiones de Insert y delete
    private boolean ejecutarUpdate(String sql){
        try{
          Statement s = conexion.createStatement();
          s.executeUpdate(sql);
          return true;
        } catch (SQLException ex) {
-            Logger.getLogger(ConexionBD.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
    }
-    private void nombreColumnas() {
-        columnas = new String[numeroColumnas];
-       for(int i=0;i<columnas.length;i++){
-            try {
-               columnas[i] = metadatos.getColumnName(i+1);
-            } catch (SQLException ex) {   }
-       }
-    }
+   
+  
     public Map<String,Zona> getZonas(){
         ejecutarSQL("SELECT * FROM zona");
         int num=this.numRegistros();
@@ -135,7 +130,7 @@ public class ConexionBD {
                 tabla.put(a.getNombre(), a);
             }
         } catch (SQLException ex) {
-        ex.printStackTrace();
+               System.out.println("Base de datos de animales vacía");
         }
 
           return tabla;
