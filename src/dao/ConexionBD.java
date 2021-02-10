@@ -68,6 +68,7 @@ public class ConexionBD {
 
    private ResultSet ejecutarSQL(String sql) {
         try {
+            //Los PreparedEstatement no me funcionaban correctamente, así que finalmente he usado los Statement.
             //sentencia = conexion.prepareStatement(sql,ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
             //sentencia =conexion.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             Statement s = conexion.createStatement();
