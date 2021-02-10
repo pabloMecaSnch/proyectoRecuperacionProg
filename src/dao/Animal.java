@@ -5,42 +5,17 @@
  */
 package dao;
 
-import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-
 /**
  *
  * @author Pablo
  */
-@Entity
-@Table(name = "animal")
-@NamedQueries({
-    @NamedQuery(name = "Animal.findAll", query = "SELECT a FROM Animal a"),
-    @NamedQuery(name = "Animal.findByIdAnimal", query = "SELECT a FROM Animal a WHERE a.idAnimal = :idAnimal"),
-    @NamedQuery(name = "Animal.findByNombre", query = "SELECT a FROM Animal a WHERE a.nombre = :nombre")})
-public class Animal implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idAnimal")
-    private Integer idAnimal;
-    @Column(name = "nombre")
+public class Animal   {
+
+  
+    private int idAnimal;
     private String nombre;
-    @JoinColumn(name = "Zona_idZona", referencedColumnName = "idZona")
-    @ManyToOne(optional = false)
-    private Zona zonaidZona;
+    private int zonaidZona;
 
     public Animal() {
     }
@@ -65,37 +40,12 @@ public class Animal implements Serializable {
         this.nombre = nombre;
     }
 
-    public Zona getZonaidZona() {
+    public int getZonaidZona() {
         return zonaidZona;
     }
 
-    public void setZonaidZona(Zona zonaidZona) {
+    public void setZonaidZona(int zonaidZona) {
         this.zonaidZona = zonaidZona;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idAnimal != null ? idAnimal.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Animal)) {
-            return false;
-        }
-        Animal other = (Animal) object;
-        if ((this.idAnimal == null && other.idAnimal != null) || (this.idAnimal != null && !this.idAnimal.equals(other.idAnimal))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "dao.Animal[ idAnimal=" + idAnimal + " ]";
     }
     
 }

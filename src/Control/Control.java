@@ -6,8 +6,8 @@
 package Control;
 
 import dao.Animal;
-import dao.AnimalJpaController;
-import java.util.List;
+
+import dao.ConexionBD;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -17,13 +17,10 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import dao.Zona;
-import dao.ZonaJpaController;
-import dao.exceptions.NonexistentEntityException;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.ObjectInputStream;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import java.util.Map;
 import org.eclipse.persistence.exceptions.DatabaseException;
 
 /**
@@ -39,21 +36,17 @@ public class Control {
     private HashMap<String, Zona> mapaAnimales;
     private HashMap<String, Zona> mapaZonas;
     private FileWriter fw;
-    
-    private EntityManagerFactory emf;
-    private ZonaJpaController zonaController;
-    private AnimalJpaController animalController;
+    private ConexionBD base;
     
     public Control(){
-        this.emf = Persistence.createEntityManagerFactory("proyectoRecuperacionProgPU");
-        this.zonaController = new ZonaJpaController(emf);
-        this.animalController = new AnimalJpaController(emf);
+        this.base= new ConexionBD("mysql","mydb","root","root");
         try {
             //Inicializo este file writer con los archivos porque hay veces que el ordenador
             //no encuentra la ruta con la clase File, pero usando FileWriter siempre la encuentra
             //y después el File va bien.
             fw = new FileWriter("src./recursos/animales.txt", true);
             fw.close();
+           
             fw = new FileWriter("src./recursos/zonas.bin",true);
             fw.close();
             
@@ -143,9 +136,9 @@ public class Control {
     public boolean anadirAnimal(Animal animal){
         
         if( mapaAnimales.get(animal.getNombre()) == null ){
-            if(this.animalController.findAnimalByName(animal.getNombre()) == null){
-                mapaAnimales.put(animal.getNombre(), animal.getZonaidZona());
-                this.animalController.create(animal);
+            if(base.getAnimalByNombre(animal.getNombre()) == null){
+                mapaAnimales.put(animal.getNombre(), base.getZonaById(animal.getZonaidZona()));
+                base.anadirAnimal(animal);
                 return true;
             }else{
                 return false;
@@ -163,18 +156,16 @@ public class Control {
         return zonas;
     }
     public Zona buscaZona(String nombre){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("proyectoRecuperacionProgPU");
-        ZonaJpaController zonaController = new ZonaJpaController(emf);
-        Zona z = zonaController.findZonaByName(nombre);
+        Zona z = base.getZonaByNombre(nombre);
         return z;
     }
 
     private Zona buscarZonaEnBase(String nombre) {
         Zona zona = new Zona();
         Animal animal = new Animal();
-        animal = this.animalController.findAnimalByName(nombre);
+        animal = base.getAnimalByNombre(nombre);
         if(animal !=null){
-            zona =  this.zonaController.findZona(animal.getZonaidZona().getIdZona());
+            zona =  base.getZonaById(animal.getZonaidZona());
         }else{
             zona = null;
         }
@@ -189,10 +180,9 @@ public class Control {
             mapaAnimales.remove(nombre);
             borrado=true;
         }
-        animalController.destroy( animalController.findAnimalByName(nombre).getIdAnimal() );
-        } catch (NonexistentEntityException ex) {
-            ex.printStackTrace();
+        if(!base.borrarAnimal(nombre)){
             borradoBase = false;
+        }
         }catch(NullPointerException ex){
             borradoBase = false;
         }
@@ -200,9 +190,9 @@ public class Control {
     }
     public ArrayList<String> getAnimales(){
         ArrayList<String> animales = new ArrayList<>();
-        List<Animal> animalesBD = this.animalController.findAnimalEntities();
+        Map<String,Animal> animalesBD = base.getAnimales();
         this.mapaAnimales.forEach((clave,valor)->animales.add(clave));
-        animalesBD.forEach((animal)->animales.add(animal.getNombre()));
+        animalesBD.forEach((clave,animal)->animales.add(animal.getNombre()));
         return animales;
     }
 }

@@ -229,7 +229,7 @@ public class Ventana extends javax.swing.JFrame {
             newAnimal.setNombre(animal);
             Zona z = c.buscaZona(zonaSelected);
             if(z != null){
-                newAnimal.setZonaidZona(z);
+                newAnimal.setZonaidZona(z.getIdZona());
                 if(c.anadirAnimal(newAnimal)){
                     this.txtNuevoAnimal.setText("");
                     txtInfoNuevoAnimal.setText("Animal correctamente introducido");
